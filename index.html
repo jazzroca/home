@@ -92,7 +92,7 @@
       color: var(--accent-gold);
     }
 
-    /* 메인 히어로 & 3장 사진 슬라이더 */
+    /* 메인 히어로 (단일 배경 이미지 적용) */
     .hero {
       position: relative;
       height: 75vh;
@@ -102,36 +102,20 @@
       display: flex;
       align-items: center;
       justify-content: center;
-    }
-
-    .slider-wrapper {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-    }
-
-    .slide {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      opacity: 0;
-      transition: opacity 1s ease-in-out;
+      /* 
+        깃허브 main 폴더의 main.jpg를 불러오도록 경로 설정 
+        (파일이 로딩되기 전에는 고화질 잔디밭 예비 이미지가 표시됩니다)
+      */
+      background-image: url('./main.jpg'), url('https://images.unsplash.com/photo-1587174486073-ae5e5cff23aa?auto=format&fit=crop&w=1600&q=80');
       background-size: cover;
       background-position: center;
-    }
-
-    .slide.active {
-      opacity: 1;
     }
 
     .hero-overlay {
       position: absolute;
       inset: 0;
       background: linear-gradient(180deg, rgba(13,36,23,0.3) 0%, rgba(13,36,23,0.7) 100%);
+      z-index: 1;
     }
 
     .hero-content {
@@ -171,31 +155,6 @@
       font-weight: 300;
       color: rgba(255, 255, 255, 0.9);
       margin-bottom: 2rem;
-    }
-
-    .slider-dots {
-      position: absolute;
-      bottom: 25px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 3;
-      display: flex;
-      gap: 10px;
-    }
-
-    .dot {
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.4);
-      cursor: pointer;
-      transition: all 0.3s;
-    }
-
-    .dot.active {
-      background: var(--accent-gold);
-      width: 32px;
-      border-radius: 10px;
     }
 
     /* 공통 레이아웃 */
@@ -465,18 +424,8 @@
     </div>
   </header>
 
-  <!-- 메인 히어로 (3장의 메인 사진 슬라이더) -->
+  <!-- 메인 히어로 (main.jpg를 단일 전면 이미지로 설정) -->
   <section class="hero" id="about">
-    <div class="slider-wrapper">
-      <!-- 
-        * 안내: 깃허브 home 저장소의 사진 파일명으로 변경해주세요.
-        예: ./photo1.jpg, ./photo2.jpg, ./photo3.jpg
-      -->
-      <div class="slide active" style="background-image: url('./photo1.jpg'), url('https://images.unsplash.com/photo-1587174486073-ae5e5cff23aa?auto=format&fit=crop&w=1600&q=80');"></div>
-      <div class="slide" style="background-image: url('./photo2.jpg'), url('https://images.unsplash.com/photo-1535131749006-b7f58c99034b?auto=format&fit=crop&w=1600&q=80');"></div>
-      <div class="slide" style="background-image: url('./photo3.jpg'), url('https://images.unsplash.com/photo-1592919505780-303950717480?auto=format&fit=crop&w=1600&q=80');"></div>
-    </div>
-    
     <div class="hero-overlay"></div>
 
     <div class="hero-content">
@@ -484,13 +433,6 @@
       <h1 class="hero-title">부부의 골프 Life 시작</h1>
       <p class="hero-desc">함께 푸른 잔디를 밟으며 인생의 나이스 샷을 만들어가는 우리 둘만의 라운딩 여정입니다.</p>
       <a href="#courses" class="btn btn-gold"><i class="fa-solid fa-golf-ball-tee"></i> 우리가 다녀온 코스 보기</a>
-    </div>
-
-    <!-- 인디케이터 닷 -->
-    <div class="slider-dots">
-      <div class="dot active" onclick="goToSlide(0)"></div>
-      <div class="dot" onclick="goToSlide(1)"></div>
-      <div class="dot" onclick="goToSlide(2)"></div>
     </div>
   </section>
 
@@ -616,29 +558,7 @@
   </footer>
 
   <script>
-    // --- 1. 메인 3장 사진 슬라이더 로직 ---
-    const slides = document.querySelectorAll('.slide');
-    const dots = document.querySelectorAll('.dot');
-    let currentSlide = 0;
-    let slideInterval;
-
-    function goToSlide(n) {
-      slides[currentSlide].classList.remove('active');
-      dots[currentSlide].classList.remove('active');
-      currentSlide = (n + slides.length) % slides.length;
-      slides[currentSlide].classList.add('active');
-      dots[currentSlide].classList.add('active');
-    }
-
-    function startSlider() {
-      slideInterval = setInterval(() => {
-        goToSlide(currentSlide + 1);
-      }, 4500);
-    }
-
-    startSlider();
-
-    // --- 2. 모달 제어 함수 ---
+    // --- 1. 모달 제어 함수 ---
     function openModal(id) {
       document.getElementById(id).style.display = 'flex';
     }
@@ -663,7 +583,7 @@
       }
     }
 
-    // --- 3. 로컬 데이터 관리 (localStorage) ---
+    // --- 2. 로컬 데이터 관리 (localStorage) ---
     // 초기 기본 골프장 샘플 데이터
     const initialCourses = [
       {
@@ -709,7 +629,7 @@
       localStorage.setItem(key, JSON.stringify(data));
     }
 
-    // --- 4. 렌더링 함수 ---
+    // --- 3. 렌더링 함수 ---
     function renderCourses() {
       const courses = getStorage('couple_courses', initialCourses);
       const grid = document.getElementById('coupleCourseGrid');
@@ -762,7 +682,7 @@
       });
     }
 
-    // --- 5. 폼 제출 이벤트 처리 ---
+    // --- 4. 폼 제출 이벤트 처리 ---
     // [A] 부부 전용 골프장 등록
     document.getElementById('courseForm').addEventListener('submit', async function(e) {
       e.preventDefault();
