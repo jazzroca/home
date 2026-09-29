@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Green Romance | 부부의 골프 Life 시작</title>
+  
+  <!-- 구글 웹폰트 & 폰트어썸 아이콘 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=Pretendard:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    :root {
+      --primary: #153e28;
+      --primary-light: #245a3c;
+      --accent-gold: #c5a059;
+      --accent-hover: #b08d46;
+      --bg-cream: #fbfbf9;
+      --text-dark: #222222;
+      --text-muted: #666666;
+      --card-bg: #ffffff;
+      --border-color: #e8e8e3;
+      --shadow: 0 10px 30px rgba(0,0,0,0.06);
+      --radius: 16px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+      background-color: var(--bg-cream);
+      color: var(--text-dark);
+      line-height: 1.6;
+    }
+
+    /* 네비게이션 헤더 */
+    header {
+      position: sticky;
+      top: 0;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border-color);
+      z-index: 100;
+      transition: all 0.3s ease;
+    }
+
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--primary);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .logo i {
+      color: var(--accent-gold);
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 1.5rem;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text-dark);
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--accent-gold);
+    }
+
+    /* 메인 히어로 & 3장 사진 슬라이더 */
+    .hero {
+      position: relative;
+      height: 75vh;
+      min-height: 520px;
+      background-color: #0d2417;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .slider-wrapper {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .slide {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .slide.active {
+      opacity: 1;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(13,36,23,0.3) 0%, rgba(13,36,23,0.7) 100%);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      color: #ffffff;
+      padding: 0 1.5rem;
+      max-width: 800px;
+    }
+
+    .hero-tag {
+      display: inline-block;
+      padding: 0.4rem 1.2rem;
+      background: rgba(197, 160, 89, 0.25);
+      border: 1px solid var(--accent-gold);
+      border-radius: 50px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #ffe6ad;
+      margin-bottom: 1.2rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .hero-title {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 2.8rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      line-height: 1.25;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+    }
+
+    .hero-desc {
+      font-size: 1.15rem;
+      font-weight: 300;
+      color: rgba(255, 255, 255, 0.9);
+      margin-bottom: 2rem;
+    }
+
+    .slider-dots {
+      position: absolute;
+      bottom: 25px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 3;
+      display: flex;
+      gap: 10px;
+    }
+
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.4);
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .dot.active {
+      background: var(--accent-gold);
+      width: 32px;
+      border-radius: 10px;
+    }
+
+    /* 공통 레이아웃 */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 5rem 1.5rem;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 3rem;
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 1.2rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .section-title {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 2rem;
+      color: var(--primary);
+    }
+
+    .section-subtitle {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin-top: 0.3rem;
+    }
+
+    /* 버튼 스타일 */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      border-radius: 30px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      border: none;
+      transition: all 0.25s;
+      text-decoration: none;
+    }
+
+    .btn-gold {
+      background: linear-gradient(135deg, var(--accent-gold), var(--accent-hover));
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(197, 160, 89, 0.3);
+    }
+
+    .btn-gold:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(197, 160, 89, 0.4);
+    }
+
+    .btn-primary {
+      background-color: var(--primary);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--primary-light);
+    }
+
+    /* 그리드 레이아웃 */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 2rem;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border-color);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+    }
+
+    .card-img-wrap {
+      width: 100%;
+      height: 220px;
+      overflow: hidden;
+      background-color: #eee;
+    }
+
+    .card-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .card:hover .card-img {
+      transform: scale(1.05);
+    }
+
+    .card-body {
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+
+    .card-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 0.6rem;
+    }
+
+    .card-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 0.6rem;
+    }
+
+    .card-desc {
+      font-size: 0.95rem;
+      color: var(--text-dark);
+      margin-bottom: 1rem;
+      flex-grow: 1;
+      white-space: pre-line;
+    }
+
+    .card-tag {
+      align-self: flex-start;
+      font-size: 0.75rem;
+      padding: 0.25rem 0.65rem;
+      background-color: #edf5f0;
+      color: var(--primary);
+      border-radius: 20px;
+      font-weight: 600;
+    }
+
+    /* 방문자 응원 & 공유 폼 섹션 */
+    .community-wrapper {
+      display: grid;
+      grid-template-columns: 1fr 1.6fr;
+      gap: 2.5rem;
+      align-items: start;
+    }
+
+    .form-box {
+      background: #ffffff;
+      padding: 2rem;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border-color);
+    }
+
+    .form-group {
+      margin-bottom: 1.2rem;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+      color: var(--text-dark);
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      font-size: 0.95rem;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .form-control:focus {
+      border-color: var(--accent-gold);
+    }
+
+    /* 모달 팝업 창 */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.65);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      padding: 1.5rem;
+    }
+
+    .modal-box {
+      background: #fff;
+      border-radius: var(--radius);
+      max-width: 500px;
+      width: 100%;
+      padding: 2.2rem;
+      position: relative;
+      animation: modalFadeIn 0.25s ease-out;
+    }
+
+    @keyframes modalFadeIn {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 1.2rem;
+      right: 1.2rem;
+      background: none;
+      border: none;
+      font-size: 1.25rem;
+      color: var(--text-muted);
+      cursor: pointer;
+    }
+
+    /* 푸터 */
+    footer {
+      background-color: #0b1e14;
+      color: #a4b3aa;
+      text-align: center;
+      padding: 3rem 1.5rem;
+      font-size: 0.9rem;
+      margin-top: 5rem;
+    }
+
+    footer p {
+      margin-bottom: 0.5rem;
+    }
+
+    /* 반응형 스타일 */
+    @media (max-width: 768px) {
+      .hero-title { font-size: 2rem; }
+      .community-wrapper { grid-template-columns: 1fr; }
+      .section-header { flex-direction: column; align-items: flex-start; }
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 헤더 네비게이션 -->
+  <header>
+    <div class="nav-container">
+      <a href="#" class="logo">
+        <i class="fa-solid fa-flag"></i> Green Romance
+      </a>
+      <ul class="nav-links">
+        <li><a href="#about">부부 골프 스토리</a></li>
+        <li><a href="#courses">다녀온 골프장</a></li>
+        <li><a href="#community">응원 & 갤러리 공유</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- 메인 히어로 (3장의 메인 사진 슬라이더) -->
+  <section class="hero" id="about">
+    <div class="slider-wrapper">
+      <!-- 
+        * 안내: 깃허브 home 저장소의 사진 파일명으로 변경해주세요.
+        예: ./photo1.jpg, ./photo2.jpg, ./photo3.jpg
+      -->
+      <div class="slide active" style="background-image: url('./photo1.jpg'), url('https://images.unsplash.com/photo-1587174486073-ae5e5cff23aa?auto=format&fit=crop&w=1600&q=80');"></div>
+      <div class="slide" style="background-image: url('./photo2.jpg'), url('https://images.unsplash.com/photo-1535131749006-b7f58c99034b?auto=format&fit=crop&w=1600&q=80');"></div>
+      <div class="slide" style="background-image: url('./photo3.jpg'), url('https://images.unsplash.com/photo-1592919505780-303950717480?auto=format&fit=crop&w=1600&q=80');"></div>
+    </div>
+    
+    <div class="hero-overlay"></div>
+
+    <div class="hero-content">
+      <span class="hero-tag"><i class="fa-solid fa-heart"></i> COUPLE GOLF LIFE</span>
+      <h1 class="hero-title">부부의 골프 Life 시작</h1>
+      <p class="hero-desc">함께 푸른 잔디를 밟으며 인생의 나이스 샷을 만들어가는 우리 둘만의 라운딩 여정입니다.</p>
+      <a href="#courses" class="btn btn-gold"><i class="fa-solid fa-golf-ball-tee"></i> 우리가 다녀온 코스 보기</a>
+    </div>
+
+    <!-- 인디케이터 닷 -->
+    <div class="slider-dots">
+      <div class="dot active" onclick="goToSlide(0)"></div>
+      <div class="dot" onclick="goToSlide(1)"></div>
+      <div class="dot" onclick="goToSlide(2)"></div>
+    </div>
+  </section>
+
+  <!-- 우리가 다녀온 골프장 아카이브 (부부 전용, 암호: k12873) -->
+  <section class="container" id="courses">
+    <div class="section-header">
+      <div>
+        <h2 class="section-title"><i class="fa-solid fa-map-location-dot"></i> 우리가 다녀온 골프장</h2>
+        <p class="section-subtitle">둘이서 함께 걸었던 전국 아름다운 골프 코스의 추억들</p>
+      </div>
+      <!-- 부부 전용 업로드 버튼 (비밀번호 확인 후 모달 오픈) -->
+      <button class="btn btn-gold" onclick="openCoupleAuthModal()">
+        <i class="fa-solid fa-key"></i> 새 골프장 기록하기 (부부 전용)
+      </button>
+    </div>
+
+    <!-- 골프장 카드 목록 그리드 -->
+    <div class="cards-grid" id="coupleCourseGrid">
+      <!-- 자바스크립트로 로컬스토리지 및 기본 데이터 렌더링 -->
+    </div>
+  </section>
+
+  <!-- 방문자 응원 & 갤러리 공유 게시판 (비밀번호 없음) -->
+  <section class="container" id="community" style="background-color: #f3f6f4; border-radius: 24px; padding: 4rem 2rem;">
+    <div class="section-header" style="border-bottom: none; margin-bottom: 2rem;">
+      <div>
+        <h2 class="section-title"><i class="fa-solid fa-comments"></i> 응원 & 방문자 갤러리</h2>
+        <p class="section-subtitle">방문해주신 분들의 따뜻한 응원 글과 여러분의 멋진 골프 사진을 자유롭게 공유해주세요! (비밀번호 필요 없음)</p>
+      </div>
+    </div>
+
+    <div class="community-wrapper">
+      <!-- 방문자 업로드 폼 -->
+      <div class="form-box">
+        <h3 style="font-size: 1.2rem; margin-bottom: 1.2rem; color: var(--primary);">
+          <i class="fa-solid fa-pen-nib"></i> 응원 & 사진 남기기
+        </h3>
+        <form id="visitorForm">
+          <div class="form-group">
+            <label for="visitorName">닉네임 / 성함</label>
+            <input type="text" id="visitorName" class="form-control" placeholder="예: 싱글골퍼, 이프로" required>
+          </div>
+          <div class="form-group">
+            <label for="visitorMessage">응원 메시지 / 후기</label>
+            <textarea id="visitorMessage" class="form-control" rows="3" placeholder="부부의 골프 라이프를 응원하는 한마디나 라운딩 소감을 적어주세요!" required></textarea>
+          </div>
+          <div class="form-group">
+            <label for="visitorImage">사진 공유 (선택 사항)</label>
+            <input type="file" id="visitorImage" class="form-control" accept="image/*">
+          </div>
+          <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
+            <i class="fa-solid fa-paper-plane"></i> 공유하기
+          </button>
+        </form>
+      </div>
+
+      <!-- 방문자 공유 카드 목록 -->
+      <div class="cards-grid" id="visitorGrid" style="grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));">
+        <!-- 자바스크립트로 방문자 글 렌더링 -->
+      </div>
+    </div>
+  </section>
+
+  <!-- [모달 1] 부부 비밀번호 인증 모달 -->
+  <div class="modal-backdrop" id="authModal">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeModal('authModal')">&times;</button>
+      <h3 style="font-size: 1.3rem; margin-bottom: 0.8rem; color: var(--primary);">
+        <i class="fa-solid fa-lock"></i> 부부 전용 업로드 인증
+      </h3>
+      <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.5rem;">
+        골프장 아카이브 작성을 위해 설정하신 비밀번호를 입력해주세요.
+      </p>
+      <div class="form-group">
+        <input type="password" id="couplePasswordInput" class="form-control" placeholder="비밀번호 입력">
+      </div>
+      <button class="btn btn-gold" style="width: 100%; justify-content: center;" onclick="verifyCouplePassword()">
+        확인
+      </button>
+    </div>
+  </div>
+
+  <!-- [모달 2] 골프장 새 글 등록 모달 -->
+  <div class="modal-backdrop" id="courseAddModal">
+    <div class="modal-box" style="max-width: 600px;">
+      <button class="modal-close" onclick="closeModal('courseAddModal')">&times;</button>
+      <h3 style="font-size: 1.3rem; margin-bottom: 1.2rem; color: var(--primary);">
+        <i class="fa-solid fa-flag"></i> 다녀온 골프장 기록하기
+      </h3>
+      <form id="courseForm">
+        <div class="form-group">
+          <label for="courseName">골프장 이름</label>
+          <input type="text" id="courseName" class="form-control" placeholder="예: 남촌 CC, 스카이72 등" required>
+        </div>
+        <div class="form-group">
+          <label for="courseDate">방문 일자</label>
+          <input type="date" id="courseDate" class="form-control" required>
+        </div>
+        <div class="form-group">
+          <label for="courseLocation">지역 / 코스 정보</label>
+          <input type="text" id="courseLocation" class="form-control" placeholder="예: 경기 광주 / 힐코스">
+        </div>
+        <div class="form-group">
+          <label for="courseReview">부부 라운딩 한줄평 & 추억</label>
+          <textarea id="courseReview" class="form-control" rows="3" placeholder="그날의 날씨, 페어웨이 상태, 둘만의 특별했던 샷 이야기 등을 기록해주세요." required></textarea>
+        </div>
+        <div class="form-group">
+          <label for="courseImage">현장 사진 첨부</label>
+          <input type="file" id="courseImage" class="form-control" accept="image/*">
+        </div>
+        <button type="submit" class="btn btn-gold" style="width: 100%; justify-content: center;">
+          <i class="fa-solid fa-check"></i> 저장하여 게시하기
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 푸터 -->
+  <footer>
+    <p><strong>Green Romance</strong> - 부부의 골프 Life 시작</p>
+    <p>함께하는 모든 라운드가 최고의 추억이 되길 바라며 🏌️‍♂️⛳🏌️‍♀️</p>
+    <p style="font-size: 0.8rem; margin-top: 1rem; color: #62776c;">Published via GitHub Pages</p>
+  </footer>
+
+  <script>
+    // --- 1. 메인 3장 사진 슬라이더 로직 ---
+    const slides = document.querySelectorAll('.slide');
+    const dots = document.querySelectorAll('.dot');
+    let currentSlide = 0;
+    let slideInterval;
+
+    function goToSlide(n) {
+      slides[currentSlide].classList.remove('active');
+      dots[currentSlide].classList.remove('active');
+      currentSlide = (n + slides.length) % slides.length;
+      slides[currentSlide].classList.add('active');
+      dots[currentSlide].classList.add('active');
+    }
+
+    function startSlider() {
+      slideInterval = setInterval(() => {
+        goToSlide(currentSlide + 1);
+      }, 4500);
+    }
+
+    startSlider();
+
+    // --- 2. 모달 제어 함수 ---
+    function openModal(id) {
+      document.getElementById(id).style.display = 'flex';
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).style.display = 'none';
+    }
+
+    function openCoupleAuthModal() {
+      document.getElementById('couplePasswordInput').value = '';
+      openModal('authModal');
+    }
+
+    // 부부 인증 비밀번호 검증 (k12873)
+    function verifyCouplePassword() {
+      const pwd = document.getElementById('couplePasswordInput').value;
+      if (pwd === 'k12873') {
+        closeModal('authModal');
+        openModal('courseAddModal');
+      } else {
+        alert('비밀번호가 일치하지 않습니다. 다시 확인해주세요!');
+      }
+    }
+
+    // --- 3. 로컬 데이터 관리 (localStorage) ---
+    // 초기 기본 골프장 샘플 데이터
+    const initialCourses = [
+      {
+        id: 1,
+        name: "남촌 컨트리클럽",
+        date: "2026-05-18",
+        location: "경기 광주",
+        review: "부부가 함께한 잊지 못할 첫 정규홀 라운딩! 푸른 잔디와 코스 관리가 정말 환상적이었던 날.",
+        image: "https://images.unsplash.com/photo-1593111774240-d529f12cf4bb?auto=format&fit=crop&w=800&q=80"
+      },
+      {
+        id: 2,
+        name: "사우스스프링스 CC",
+        date: "2026-08-10",
+        location: "경기 이천",
+        review: "날씨는 더웠지만 와이프의 인생 첫 버디가 나온 날! 서로 축하해주며 활짝 웃었던 순간입니다.",
+        image: "https://images.unsplash.com/photo-1592919505780-303950717480?auto=format&fit=crop&w=800&q=80"
+      }
+    ];
+
+    // 초기 방문자 응원 글 샘플 데이터
+    const initialVisitors = [
+      {
+        id: 1,
+        name: "골프사랑 7호",
+        message: "두 분 너무 보기 좋습니다! 부부가 같이 취미를 즐기는 게 최고의 축복이죠. 나이스 샷!",
+        image: ""
+      },
+      {
+        id: 2,
+        name: "제주 라운더",
+        message: "가을에 제주도 코스도 꼭 한번 다녀와보세요! 부부 골프 라이프 늘 응원합니다.",
+        image: "https://images.unsplash.com/photo-1535131749006-b7f58c99034b?auto=format&fit=crop&w=800&q=80"
+      }
+    ];
+
+    function getStorage(key, defaultData) {
+      const data = localStorage.getItem(key);
+      return data ? JSON.parse(data) : defaultData;
+    }
+
+    function saveStorage(key, data) {
+      localStorage.setItem(key, JSON.stringify(data));
+    }
+
+    // --- 4. 렌더링 함수 ---
+    function renderCourses() {
+      const courses = getStorage('couple_courses', initialCourses);
+      const grid = document.getElementById('coupleCourseGrid');
+      grid.innerHTML = courses.map(c => `
+        <div class="card">
+          <div class="card-img-wrap">
+            <img src="${c.image || 'https://images.unsplash.com/photo-1587174486073-ae5e5cff23aa?auto=format&fit=crop&w=800&q=80'}" class="card-img" alt="${c.name}">
+          </div>
+          <div class="card-body">
+            <div class="card-meta">
+              <span><i class="fa-regular fa-calendar"></i> ${c.date}</span>
+              <span><i class="fa-solid fa-location-dot"></i> ${c.location}</span>
+            </div>
+            <h3 class="card-title">${c.name}</h3>
+            <p class="card-desc">${c.review}</p>
+            <span class="card-tag">⛳ 부부 라운딩 기록</span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderVisitors() {
+      const visitors = getStorage('visitor_posts', initialVisitors);
+      const grid = document.getElementById('visitorGrid');
+      grid.innerHTML = visitors.map(v => `
+        <div class="card" style="box-shadow: 0 4px 15px rgba(0,0,0,0.04);">
+          ${v.image ? `
+            <div class="card-img-wrap" style="height: 160px;">
+              <img src="${v.image}" class="card-img" alt="공유 사진">
+            </div>
+          ` : ''}
+          <div class="card-body" style="padding: 1.2rem;">
+            <div style="font-weight: 700; color: var(--primary); font-size: 1rem; margin-bottom: 0.4rem;">
+              <i class="fa-regular fa-user"></i> ${v.name}
+            </div>
+            <p style="font-size: 0.9rem; color: var(--text-dark);">${v.message}</p>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // 파일 이미지를 Base64 문자열로 읽는 도우미 함수
+    function fileToBase64(file) {
+      return new Promise((resolve, reject) => {
+        if (!file) return resolve('');
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+        reader.readAsDataURL(file);
+      });
+    }
+
+    // --- 5. 폼 제출 이벤트 처리 ---
+    // [A] 부부 전용 골프장 등록
+    document.getElementById('courseForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const name = document.getElementById('courseName').value;
+      const date = document.getElementById('courseDate').value;
+      const location = document.getElementById('courseLocation').value || '필드';
+      const review = document.getElementById('courseReview').value;
+      const fileInput = document.getElementById('courseImage');
+      
+      let imageUrl = '';
+      if (fileInput.files.length > 0) {
+        imageUrl = await fileToBase64(fileInput.files[0]);
+      }
+
+      const courses = getStorage('couple_courses', initialCourses);
+      courses.unshift({
+        id: Date.now(),
+        name,
+        date,
+        location,
+        review,
+        image: imageUrl
+      });
+
+      saveStorage('couple_courses', courses);
+      renderCourses();
+      closeModal('courseAddModal');
+      this.reset();
+      alert('성공적으로 골프장 기록이 등록되었습니다!');
+    });
+
+    // [B] 방문자 응원 및 사진 공유 (비밀번호 없음)
+    document.getElementById('visitorForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const name = document.getElementById('visitorName').value;
+      const message = document.getElementById('visitorMessage').value;
+      const fileInput = document.getElementById('visitorImage');
+
+      let imageUrl = '';
+      if (fileInput.files.length > 0) {
+        imageUrl = await fileToBase64(fileInput.files[0]);
+      }
+
+      const visitors = getStorage('visitor_posts', initialVisitors);
+      visitors.unshift({
+        id: Date.now(),
+        name,
+        message,
+        image: imageUrl
+      });
+
+      saveStorage('visitor_posts', visitors);
+      renderVisitors();
+      this.reset();
+      alert('소중한 응원과 사진이 공유되었습니다. 감사합니다!');
+    });
+
+    // 초기 렌더링 실행
+    window.addEventListener('DOMContentLoaded', () => {
+      renderCourses();
+      renderVisitors();
+    });
+  </script>
+</body>
+</html>
